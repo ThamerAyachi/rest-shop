@@ -1,0 +1,6 @@
+{
+    "env": {
+        "MONGO_ATLAS_DB": "node-rest-shope",
+        "MONGO_ATLAS_PW": "S0K6ZelARwYk5JPn"
+    }
+}

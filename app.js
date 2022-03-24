@@ -2,10 +2,14 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 // import routes
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+
+// connect database
+mongoose.connect('mongodb+srv://rest-shope:'+ process.env.MONGO_ATLAS_PW +'@cluster0.qup6q.mongodb.net/'+ process.env.MONGO_ATLAS_DB +'?retryWrites=true&w=majority')
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -26,6 +30,7 @@ app.use((req, res, next) => {
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 
+// Catch error
 app.use((req, res, next) => {
     const error = new Error('Not found');
     error.status = 404;
@@ -36,5 +41,7 @@ app.use((error, req, res, next) => {
     res.status(error.status || 500);
     res.json({error: {message: error.message}});
 });
+// end catch error
+
 
 module.exports = app;
