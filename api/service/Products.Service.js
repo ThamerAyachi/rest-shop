@@ -87,7 +87,7 @@ class ProductsService {
                 res.status(500).json(errorMessage(err));
             });
 
-        /** Data send */
+        /** Data send format */
         /* 
             [ { "propName": "name", "value": "example" } ]
         */
