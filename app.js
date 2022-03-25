@@ -12,6 +12,7 @@ const orderRoutes = require('./api/routes/orders');
 mongoose.connect('mongodb+srv://rest-shope:'+ process.env.MONGO_ATLAS_PW +'@cluster0.qup6q.mongodb.net/'+ process.env.MONGO_ATLAS_DB +'?retryWrites=true&w=majority')
 
 app.use(morgan('dev'));
+app.use('/uploads' ,express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 

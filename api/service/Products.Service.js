@@ -8,7 +8,8 @@ class ProductsService {
         const _product = {
             _id: new mongoose.Types.ObjectId,
             name: req.body.name,
-            price: req.body.price
+            price: req.body.price,
+            productImage: req.file.path
         }
         if (_product.name && _product.price) {
             const product = new Product(_product);
@@ -19,6 +20,7 @@ class ProductsService {
                             _id: result._id,
                             name: result.name,
                             price: result.price,
+                            productImage: process.env.URL + result.productImage,
                             request: {
                                 type: 'GET',
                                 url: process.env.URL + "products/" + result._id
@@ -37,7 +39,7 @@ class ProductsService {
     getProductById(req, res) {
         const id = req.params.id;
         Product.findById(id)
-            .select('name price _id')
+            .select('name price _id productImage')
             .exec()
             .then(result => {
                 if (result) {
@@ -47,6 +49,7 @@ class ProductsService {
                             _id: result._id,
                             name: result.name,
                             price: result.price,
+                            productImage: process.env.URL + result.productImage,
                             request: {
                                 type: 'GET',
                                 url: process.env.URL + "products/" + result._id
@@ -65,7 +68,7 @@ class ProductsService {
 
     getProducts(req, res) {
         Product.find()
-            .select('name price _id')
+            .select('name price _id productImage')
             .exec()
             .then(result => {
                 const response = {
@@ -75,6 +78,7 @@ class ProductsService {
                             _id: doc._id,
                             name: doc.name,
                             price: doc.price,
+                            productImage: process.env.URL + doc.productImage,
                             request: {
                                 type: 'GET',
                                 url: process.env.URL + "products/" + doc._id
@@ -100,7 +104,8 @@ class ProductsService {
                         url: process.env.URL + "products",
                         data: {
                             name: "String",
-                            price: "Number"
+                            price: "Number",
+                            productImage: 'file'
                         }
                     },
                     result: result

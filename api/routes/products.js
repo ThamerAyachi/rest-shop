@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../service/ImageProduct.Service');
 
 const ProductsService = require('../service/Products.Service');
 
@@ -9,7 +10,8 @@ router.get('/', (req, res, next) => {
     productsService.getProducts(req, res);
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', upload.single('productImage'), (req, res, next) => {
+    console.log(req.file);
     productsService.saveProduct(req, res);
 });
 
