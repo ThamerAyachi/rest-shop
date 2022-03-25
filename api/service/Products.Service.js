@@ -14,8 +14,16 @@ class ProductsService {
             const product = new Product(_product);
             product.save().then(result => {
                     res.status(201).json({
-                        message: 'Handling POST requests to /products',
-                        createrProduct: result
+                        message: 'Created product successfully',
+                        createrProduct: {
+                            _id: result._id,
+                            name: result.name,
+                            price: result.price,
+                            request: {
+                                type: 'GET',
+                                url: process.env.URL + "products/" + result._id
+                            }
+                        }
                     });
                 })
                 .catch(err => {
@@ -29,12 +37,21 @@ class ProductsService {
     getProductById(req, res) {
         const id = req.params.id;
         Product.findById(id)
+            .select('name price _id')
             .exec()
             .then(result => {
                 if (result) {
                     res.status(200).json({
                         message: 'Handling GET requests to /products/id',
-                        product: result
+                        product: {
+                            _id: result._id,
+                            name: result.name,
+                            price: result.price,
+                            request: {
+                                type: 'GET',
+                                url: process.env.URL + "products/" + result._id
+                            }
+                        }
                     });                    
                 } else {
                     res.status(404).json(errorMessage('product not found'));
@@ -48,11 +65,24 @@ class ProductsService {
 
     getProducts(req, res) {
         Product.find()
+            .select('name price _id')
             .exec()
             .then(result => {
-                res.status(200).json({
-                    products: result
-                });
+                const response = {
+                    count: result.length,
+                    products: result.map(doc => {
+                        return {
+                            _id: doc._id,
+                            name: doc.name,
+                            price: doc.price,
+                            request: {
+                                type: 'GET',
+                                url: process.env.URL + "products/" + doc._id
+                            }
+                        }
+                    })
+                }
+                res.status(200).json(response);
             }).catch(err => {
                 res.status(500).json(errorMessage(err));
             });
@@ -63,10 +93,20 @@ class ProductsService {
         Product.remove({ _id: id })
             .exec()
             .then(result => {
-                res.status(200).json(result);
+                res.status(200).json({
+                    message: 'Product deleted',
+                    request: {
+                        type: 'POST',
+                        url: process.env.URL + "products",
+                        data: {
+                            name: "String",
+                            price: "Number"
+                        }
+                    },
+                    result: result
+                });
             })
             .catch(err => {
-                console.log('test')
                 res.status(500).json(errorMessage(err));
             });
     }
@@ -81,16 +121,18 @@ class ProductsService {
             .exec()
             .then(result => {
                 res.status(200).json({
-                    result: result,
+                    message: 'Product updated',
+                    request: {
+                        type: 'GET',
+                        url: process.env.URL + "products/" + id
+                    }
                 })
             }).catch(err => {
                 res.status(500).json(errorMessage(err));
             });
 
-        /** Data send format */
-        /* 
-            [ { "propName": "name", "value": "example" } ]
-        */
+        // ! Data send format
+        // !  [ { "propName": "name", "value": "example" } ]
     }
 }
 

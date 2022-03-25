@@ -1,6 +1,8 @@
 {
     "env": {
+        "PORT": 3000,
         "MONGO_ATLAS_DB": "node-rest-shope",
-        "MONGO_ATLAS_PW": "S0K6ZelARwYk5JPn"
+        "MONGO_ATLAS_PW": "S0K6ZelARwYk5JPn",
+        "URL": "http://localhost:3000/"
     }
 }
