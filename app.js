@@ -7,9 +7,10 @@ const mongoose = require('mongoose');
 // import routes
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+const userRouter = require('./api/routes/user');
 
 // connect database
-mongoose.connect('mongodb+srv://rest-shope:'+ process.env.MONGO_ATLAS_PW +'@cluster0.qup6q.mongodb.net/'+ process.env.MONGO_ATLAS_DB +'?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://rest-shope:' + process.env.MONGO_ATLAS_PW + '@cluster0.qup6q.mongodb.net/' + process.env.MONGO_ATLAS_DB + '?retryWrites=true&w=majority');
 
 app.use(morgan('dev'));
 app.use('/uploads' ,express.static('uploads'));
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/user', userRouter);
 
 // Catch error
 app.use((req, res, next) => {
