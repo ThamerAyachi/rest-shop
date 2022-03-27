@@ -9,6 +9,10 @@ router.post('/signup', (req, res, next) => {
     userService.signUp(req, res);
 });
 
+router.post('/login', (req, res, next) => {
+    userService.login(req, res);
+});
+
 router.delete('/:id', (req, res, next) => {
     userService.deleteUser(req, res);
 });
