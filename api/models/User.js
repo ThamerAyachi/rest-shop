@@ -4,8 +4,8 @@ const emailRegExp = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|
 
 const userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    email: { type: String, require: true, unique: true, match: emailRegExp },
-    password: {type: String, require: true }
+    email: { type: String, required: true, unique: true, match: emailRegExp },
+    password: {type: String, required: true }
 });
 
 module.exports = mongoose.model('User', userSchema);
